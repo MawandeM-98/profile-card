@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile Card Generator</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+  <!-- FORM -->
+  <div class="panel">
+    <h1>Profile Card Generator</h1>
+    <p class="subtitle">Fill in your details, pick your colors, and generate a beautiful card.</p>
+
+    <form id="profileForm">
+      <div class="row">
+        <div class="field">
+          <label for="firstName">First Name</label>
+          <input id="firstName" required placeholder="Alex" />
+        </div>
+        <div class="field">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" required placeholder="Johnson" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="title">Job Title</label>
+        <input id="title" required placeholder="Frontend Developer" />
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender">
+            <option value="">Prefer not to say</option>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="location">Location</label>
+          <input id="location" placeholder="Lagos, Nigeria" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="alex@example.com" />
+      </div>
+
+      <div class="field">
+        <label for="bio">Bio</label>
+        <textarea id="bio" maxlength="160" placeholder="I build clean, accessible web interfaces."></textarea>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="github">GitHub</label>
+          <input id="github" placeholder="alexj" />
+        </div>
+        <div class="field">
+          <label for="linkedin">LinkedIn</label>
+          <input id="linkedin" placeholder="alex-johnson" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="twitter">Twitter / X</label>
+          <input id="twitter" placeholder="alexj" />
+        </div>
+        <div class="field">
+          <label for="instagram">Instagram</label>
+          <input id="instagram" placeholder="alexj" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Profile Photo</label>
+        <label class="file-upload" for="photo">
+          <div class="preview-thumb" id="thumb">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+            </svg>
+          </div>
+          <div class="upload-text">
+            <strong id="fileName">Click to upload</strong>
+            PNG, JPG up to 5MB
+          </div>
+          <input id="photo" type="file" accept="image/*" />
+        </label>
+      </div>
+
+      <!-- COLOR SECTION -->
+      <div class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="13.5" cy="6.5" r="2.5"/>
+          <circle cx="17.5" cy="14.5" r="2.5"/>
+          <circle cx="8.5" cy="7.5" r="2.5"/>
+          <circle cx="6.5" cy="15.5" r="2.5"/>
+        </svg>
+        Customize Colors
+      </div>
+
+      <div class="color-grid">
+        <div class="color-field">
+          <label for="accentColor">Accent</label>
+          <div class="color-picker-wrap" style="background: #6d8dff">
+            <input type="color" id="accentColor" value="#6d8dff" />
+            <span class="color-swatch" id="accentValue">#6d8dff</span>
+          </div>
+          <div class="color-presets" data-target="accent">
+            <div class="preset-dot" data-color="#6d8dff" style="background:#6d8dff"></div>
+            <div class="preset-dot" data-color="#a16bff" style="background:#a16bff"></div>
+            <div class="preset-dot" data-color="#ff6b9d" style="background:#ff6b9d"></div>
+            <div class="preset-dot" data-color="#3ecf8e" style="background:#3ecf8e"></div>
+            <div class="preset-dot" data-color="#ffa94d" style="background:#ffa94d"></div>
+          </div>
+        </div>
+
+        <div class="color-field">
+          <label for="cardColor">Card</label>
+          <div class="color-picker-wrap" style="background: #1a2335">
+            <input type="color" id="cardColor" value="#1a2335" />
+            <span class="color-swatch" id="cardValue">#1a2335</span>
+          </div>
+          <div class="color-presets" data-target="card">
+            <div class="preset-dot" data-color="#1a2335" style="background:#1a2335"></div>
+            <div class="preset-dot" data-color="#ffffff" style="background:#ffffff"></div>
+            <div class="preset-dot" data-color="#fef3c7" style="background:#fef3c7"></div>
+            <div class="preset-dot" data-color="#0f172a" style="background:#0f172a"></div>
+            <div class="preset-dot" data-color="#1e293b" style="background:#1e293b"></div>
+          </div>
+        </div>
+
+        <div class="color-field">
+          <label for="bgColor">Page BG</label>
+          <div class="color-picker-wrap" style="background: #0b0f17">
+            <input type="color" id="bgColor" value="#0b0f17" />
+            <span class="color-swatch" id="bgValue">#0b0f17</span>
+          </div>
+          <div class="color-presets" data-target="bg">
+            <div class="preset-dot" data-color="#0b0f17" style="background:#0b0f17"></div>
+            <div class="preset-dot" data-color="#000000" style="background:#000000"></div>
+            <div class="preset-dot" data-color="#1a1a2e" style="background:#1a1a2e"></div>
+            <div class="preset-dot" data-color="#f5f5f7" style="background:#f5f5f7"></div>
+            <div class="preset-dot" data-color="#e8f0ff" style="background:#e8f0ff"></div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn" id="generateBtn">
+        <span id="btnLabel">Generate Card</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="panel">
+    <div class="card-stage" id="cardStage">
+      <div class="empty-state" id="emptyState">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="16" rx="3"/>
+          <circle cx="9" cy="10" r="2"/>
+          <path d="M15 8h3M15 12h3M6 16c1.5-2 4.5-2 6 0"/>
+        </svg>
+        <div>Your card will appear here</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
