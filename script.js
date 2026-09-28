@@ -24,9 +24,6 @@ const accentValue = document.getElementById('accentValue');
 const cardValue = document.getElementById('cardValue');
 const bgValue = document.getElementById('bgValue');
 
-/**
- * Lightens a hex color by a percentage (0 to 1).
- */
 function shadeColor(hex, percent) {
   const n = parseInt(hex.replace('#', ''), 16);
   let r = (n >> 16) & 0xff;
@@ -45,7 +42,6 @@ function applyAccent(hex) {
 
 function applyCard(hex) {
   root.style.setProperty('--card-bg', hex);
-  // Choose border color based on card luminance
   const n = parseInt(hex.replace('#', ''), 16);
   const r = (n >> 16) & 0xff;
   const g = (n >> 8) & 0xff;
@@ -55,7 +51,6 @@ function applyCard(hex) {
     '--card-border',
     brightness > 180 ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.08)'
   );
-  // Keep avatar border in sync
   document.querySelectorAll('.card-avatar').forEach((a) => {
     a.style.borderColor = hex;
   });
@@ -76,7 +71,6 @@ function clearActivePreset(target) {
     .forEach((d) => d.classList.remove('active'));
 }
 
-// Live updates from native color inputs
 accentInput.addEventListener('input', (e) => {
   applyAccent(e.target.value);
   syncSwatch(accentInput, accentValue);
@@ -95,7 +89,6 @@ bgInput.addEventListener('input', (e) => {
   clearActivePreset('bg');
 });
 
-// Preset swatches
 document.querySelectorAll('.color-presets').forEach((group) => {
   group.addEventListener('click', (e) => {
     const dot = e.target.closest('.preset-dot');
@@ -124,7 +117,6 @@ document.querySelectorAll('.color-presets').forEach((group) => {
   });
 });
 
-// Initialize colors on load
 applyAccent(accentInput.value);
 applyCard(cardInput.value);
 applyBg(bgInput.value);
@@ -228,8 +220,12 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
 
   btn.disabled = true;
+  btn.classList.add('generating');
   btnLabel.textContent = 'Generating…';
-  btn.insertAdjacentHTML('afterbegin', `<div class="spinner" id="spinner"></div>`);
+  btn.insertAdjacentHTML(
+    'afterbegin',
+    `<span class="pulse-dot" id="pulseDot"></span>`
+  );
 
   const data = {
     firstName: val('firstName'),
@@ -249,9 +245,10 @@ form.addEventListener('submit', (e) => {
 
     stage.insertAdjacentHTML('beforeend', buildCard(data));
 
-    const spinner = document.getElementById('spinner');
-    if (spinner) spinner.remove();
+    const dot = document.getElementById('pulseDot');
+    if (dot) dot.remove();
+    btn.classList.remove('generating');
     btn.disabled = false;
     btnLabel.textContent = 'Generate Card';
-  }, 1400);
+  }, 2600);
 });

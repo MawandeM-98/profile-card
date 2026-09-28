@@ -11,7 +11,6 @@
   --accent: #6d8dff;
   --accent-2: #a16bff;
 
-  /* Card-specific (updated by JS) */
   --card-bg: #1a2335;
   --card-border: rgba(255, 255, 255, 0.08);
 }
@@ -26,11 +25,59 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  padding: 40px 20px 60px;
+  transition: background 0.4s ease;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.app-header {
+  max-width: 1150px;
+  margin: 0 auto 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-header .logo {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-  transition: background 0.4s ease;
+  color: white;
+  margin-bottom: 6px;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.app-header .logo svg {
+  width: 28px;
+  height: 28px;
+}
+
+.app-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #fff 30%, color-mix(in srgb, var(--accent) 80%, #fff) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-tagline {
+  color: var(--muted);
+  font-size: 14.5px;
+  margin: 0;
+  max-width: 520px;
+  line-height: 1.6;
 }
 
 /* ============================================
@@ -39,27 +86,11 @@ body {
 .app {
   width: 100%;
   max-width: 1150px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
   align-items: start;
-}
-
-@media (max-width: 900px) {
-  .app { grid-template-columns: 1fr; }
-}
-
-h1 {
-  font-size: 26px;
-  font-weight: 700;
-  margin: 0 0 8px;
-  letter-spacing: -0.02em;
-}
-
-.subtitle {
-  color: var(--muted);
-  font-size: 14px;
-  margin-bottom: 24px;
 }
 
 .panel {
@@ -122,7 +153,6 @@ textarea {
 
 select { cursor: pointer; }
 
-/* Section divider inside form */
 .section-label {
   font-size: 11px;
   font-weight: 700;
@@ -150,10 +180,6 @@ select { cursor: pointer; }
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 8px;
-}
-
-@media (max-width: 480px) {
-  .color-grid { grid-template-columns: 1fr; }
 }
 
 .color-field { text-align: center; }
@@ -282,7 +308,7 @@ select { cursor: pointer; }
 }
 
 /* ============================================
-   BUTTONS
+   BUTTON + HEARTBEAT PULSE
    ============================================ */
 .btn {
   width: 100%;
@@ -305,6 +331,7 @@ select { cursor: pointer; }
   justify-content: center;
   gap: 10px;
   font-family: inherit;
+  position: relative;
 }
 
 .btn:hover:not(:disabled) {
@@ -313,21 +340,52 @@ select { cursor: pointer; }
 }
 
 .btn:disabled {
-  opacity: 0.7;
   cursor: not-allowed;
+  opacity: 1;
 }
 
-.spinner {
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+/* When generating: slow heartbeat pulse on the whole button */
+.btn.generating {
+  animation: heartbeat 2.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0    color-mix(in srgb, var(--accent) 45%, transparent); }
+  15%  { transform: scale(1.03); box-shadow: 0 0 0 12px color-mix(in srgb, var(--accent) 0%, transparent); }
+  30%  { transform: scale(1);    box-shadow: 0 0 0 0    color-mix(in srgb, var(--accent) 45%, transparent); }
+  45%  { transform: scale(1.03); box-shadow: 0 0 0 12px color-mix(in srgb, var(--accent) 0%, transparent); }
+  60%  { transform: scale(1);    box-shadow: 0 0 0 0    color-mix(in srgb, var(--accent) 45%, transparent); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0    color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+
+/* Little pulsing dot inside the button (also heartbeats) */
+.pulse-dot {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  background: white;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
+  animation: dotPulse 2.4s ease-in-out infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  15%      { transform: scale(1.6); opacity: 0.85; }
+  30%      { transform: scale(1);   opacity: 1; }
+  45%      { transform: scale(1.6); opacity: 0.85; }
+  60%      { transform: scale(1);   opacity: 1; }
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn.generating,
+  .pulse-dot {
+    animation: none;
+  }
+  .pulse-dot {
+    background: white;
+    opacity: 0.6;
+  }
 }
 
 /* ============================================
@@ -366,14 +424,8 @@ select { cursor: pointer; }
 }
 
 @keyframes cardIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .card-banner {
@@ -530,4 +582,104 @@ select { cursor: pointer; }
 .download-btn:hover {
   color: var(--text);
   border-color: var(--accent);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Tablet & below — stack columns */
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .app-header h1 { font-size: 28px; }
+}
+
+/* Small phones */
+@media (max-width: 560px) {
+  body {
+    padding: 24px 14px 40px;
+  }
+
+  .app-header {
+    margin-bottom: 28px;
+  }
+
+  .app-header .logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+  .app-header .logo svg { width: 24px; height: 24px; }
+
+  .app-header h1 { font-size: 24px; }
+
+  .header-tagline {
+    font-size: 13px;
+    padding: 0 8px;
+  }
+
+  .panel {
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  /* Stack the two-column rows */
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* Stack color grid vertically */
+  .color-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .color-picker-wrap {
+    aspect-ratio: 2.4;
+  }
+
+  /* Make inputs slightly taller for thumbs */
+  input[type="text"],
+  input[type="email"],
+  input:not([type]),
+  textarea,
+  select {
+    padding: 13px 14px;
+    font-size: 15px;
+  }
+
+  .btn {
+    padding: 15px;
+    font-size: 15px;
+  }
+
+  .card-stage {
+    min-height: 320px;
+  }
+
+  .card-avatar {
+    width: 90px;
+    height: 90px;
+    margin-top: -45px;
+    border-width: 3px;
+  }
+
+  .card-avatar .initials { font-size: 30px; }
+
+  .card-body { padding: 14px 18px 20px; }
+
+  .card-name { font-size: 19px; }
+  .card-banner { height: 90px; }
+}
+
+/* Extra-small phones */
+@media (max-width: 360px) {
+  .app-header h1 { font-size: 21px; }
+  .header-tagline { font-size: 12px; }
+  .panel { padding: 16px 14px; }
+  .card-body { padding: 12px 14px 18px; }
 }
